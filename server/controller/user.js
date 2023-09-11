@@ -1,10 +1,13 @@
 const { validationResult } = require('express-validator');
+const jwt = require('jsonwebtoken');
 
 // Sample users
 const users = [
   { id: 1, username: 'admin', password: 'adminpassword', role: 'admin' },
   { id: 2, username: 'user', password: 'userpassword', role: 'user' },
 ];
+
+const secretKey = '123';
 
 module.exports.loginUser = async (req, res) => {
   const errors = validationResult(req);
@@ -29,5 +32,14 @@ module.exports.loginUser = async (req, res) => {
       .json({ message: 'Authentication failed. Incorrect password.' });
   }
 
-  res.json(user);
+  // Generate a JWT token
+  const token = jwt.sign(
+    { id: user.id, username: user.username, role: user.role },
+    secretKey,
+    {
+      expiresIn: '1h', // Token expires in 1 hour
+    }
+  );
+
+  res.json({ user, token });
 };
