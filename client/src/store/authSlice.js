@@ -12,6 +12,7 @@ export const loginUser = createAsyncThunk(
 
       // Assuming your backend returns a user and token upon successful login
       const { user, token } = response.data;
+      localStorage.setItem('user', JSON.stringify(user));
 
       return { user, token };
     } catch (error) {
@@ -25,7 +26,7 @@ export const loginUser = createAsyncThunk(
 
 // Define the initial state
 const initialState = {
-  user: null,
+  user: JSON.parse(localStorage.getItem('user')) || null,
   token: null,
   status: 'idle',
   error: null,
@@ -36,7 +37,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.removeItem('userToken'); // deletes token from storage
+      localStorage.removeItem('user'); // deletes token from storage
       state.user = null;
       state.token = null;
       state.error = null;

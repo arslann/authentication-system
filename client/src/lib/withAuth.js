@@ -1,21 +1,26 @@
+'use client';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 const withAuth = (WrappedComponent, allowedRoles = []) => {
   return (props) => {
     const router = useRouter();
-    const user = useSelector((state) => state.auth.user);
+    const { user, role } = useSelector((state) => state.auth);
 
-    // Redirect unauthenticated users to the login page
+    useEffect(() => {
+      // Redirect unauthenticated users to the login page
+      if (!user) {
+        router.replace('/');
+      }
+      // Check if the user has the required role
+      else if (allowedRoles.length > 0 && allowedRoles.includes(role)) {
+        router.replace('/');
+      }
+    }, [user, role, allowedRoles, router]);
+
     if (!user) {
-      router.replace('/');
-      return null; // Or display a loading spinner
-    }
-
-    // Check if the user has the required role
-    if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
-      router.replace('/');
-      return null; // Or display a "Permission denied" message
+      return null;
     }
 
     return <WrappedComponent {...props} />;

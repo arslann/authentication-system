@@ -29,7 +29,12 @@ const LoginForm = () => {
     <div className="flex flex-col text-2xl items-center">
       <h2 className="mb-8">Login</h2>
       {/* Show submit errors */}
-      {error && error.map((err) => <p className="text-red-600">{err.msg}</p>)}
+      {error &&
+        error.map((err) => (
+          <p key={err.msg} className="text-red-600">
+            {err.msg}
+          </p>
+        ))}
       <form onSubmit={handleLogin} className="flex flex-col flex-1 gap-3">
         <div className="flex gap-3">
           <label htmlFor="username">Username</label>
