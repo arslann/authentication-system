@@ -21,15 +21,17 @@ module.exports.loginUser = async (req, res) => {
   const user = users.find((user) => user.username === username);
   if (!user) {
     return res
-      .status(401)
-      .json({ message: 'Authentication failed. User not found.' });
+      .status(400)
+      .json({ errors: [{ msg: 'Authentication failed. User not found.' }] });
   }
 
   // Compare passwords
   if (user.password !== password) {
     return res
-      .status(401)
-      .json({ message: 'Authentication failed. Incorrect password.' });
+      .status(400)
+      .json({
+        errors: [{ msg: 'Authentication failed. Incorrect password.' }],
+      });
   }
 
   // Generate a JWT token
