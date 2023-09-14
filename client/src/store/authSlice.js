@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const apiBaseUrl = 'http://localhost:5000'; // Replace with your actual API URL
+const apiBaseUrl = 'http://localhost:5000';
 
 // Async thunk action to handle login
 export const loginUser = createAsyncThunk(
@@ -10,8 +10,9 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await axios.post(`${apiBaseUrl}/api/users`, credentials);
 
-      // Assuming your backend returns a user and token upon successful login
       const { user, token } = response.data;
+
+      // normally we would store JWT token
       localStorage.setItem('user', JSON.stringify(user));
 
       return { user, token };
@@ -37,7 +38,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.removeItem('user'); // deletes token from storage
+      localStorage.removeItem('user'); // deletes user from storage
       state.user = null;
       state.token = null;
       state.error = null;

@@ -26,7 +26,7 @@ const LoginForm = () => {
   return user ? (
     <p className="text-green-600 font-bold text-2xl">Successfully logged in</p>
   ) : (
-    <div className="flex flex-col text-2xl items-center">
+    <div className="flex flex-col text-2xl items-center px-4">
       <h2 className="mb-8">Login</h2>
       {/* Show submit errors */}
       {error &&
@@ -35,7 +35,7 @@ const LoginForm = () => {
             {err.msg}
           </p>
         ))}
-      <form onSubmit={handleLogin} className="flex flex-col flex-1 gap-3">
+      <form onSubmit={handleLogin} className="flex flex-col flex-1 gap-3 mt-4">
         <div className="flex gap-3">
           <label htmlFor="username">Username</label>
           <input
